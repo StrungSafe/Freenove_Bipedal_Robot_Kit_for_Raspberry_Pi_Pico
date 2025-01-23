@@ -38,49 +38,74 @@ Bipedal_Robot Bipedal_Robot;
 #define LeftFoot 11
 #define RightFoot 13
 
-// TODO: Get and upload the alarm(s) sound
-// TODO: Could use the IR or BT controllers?
+#define RoundingError 5
 
-int initialSonar 0;
+int initialSonar = 0;
 
 AudioGeneratorMP3 *mp3;
 AudioFileSourceLittleFS *file;
 AudioOutputI2SNoDAC *out;
 
+void setupAudio() {
+  file = new AudioFileSourceLittleFS("Fart1.mp3");
+  out = new AudioOutputI2SNoDAC(6);
+  out->SetGain(0.1);
+  mp3 = new AudioGeneratorMP3();
+}
+
+void setupServo() {
+  Bipedal_Robot.init(LeftLeg, RightLeg, LeftFoot, RightFoot, true);
+  Bipedal_Robot.saveTrimsOnEEPROM();
+  Bipedal_Robot.home();
+}
+
+void setupLights() {
+  WS2812_Setup();
+  WS2812_Show(0);
+}
+
 void setup() {
   Serial.begin(115200);
+  delay(1500);
 
-  // audio setup
-  file = new AudioFileSourceLittleFS("Nicetomeetyou.mp3");
-  out = new AudioOutputI2SNoDAC(6);
-  out->SetGain(2);  //Volume Setup
-  mp3 = new AudioGeneratorMP3();
-  // ultrasonic setup
+  EEPROM.begin(512);
+  setupAudio();
+  // setupServo();
+  setupLights();
   Ultrasonic_Setup();
-  // servo setup
-  Bipedal_Robot.init(LeftLeg, RightLeg, LeftFoot, RightFoot, true); //Set the servo pins
-  Bipedal_Robot.home();
+  
   // motion detection setup
   initialSonar = Get_Sonar();
-  // lights setup
-  WS2812_Setup();
+  Serial.print("initial sonar: ");
+  Serial.println(initialSonar);  
 
-  delay(50);
+  delay(1000);
 }
 
 void loop()
 {
   if (mp3->isRunning()) {
+    Serial.println("mp3 is running");
     if (!mp3->loop()) {
+      Serial.println("mp3 is finished");
       mp3->stop();
+      out->flush();
+      out->stop();
+      pinMode(6, OUTPUT);
+      digitalWrite(6, LOW);
       delete file;
       delete mp3;
-      mp3 = new AudioGeneratorMP3();
+      delete out;
+      setupAudio();
       WS2812_Show(0);
     }
   } else {
+    Serial.println("else block");
     int ping = Get_Sonar();
-    if(ping != initialSonar && (initialSonar - ping) > 1) {
+    Serial.print("ping: ");
+    Serial.println(ping);
+    if(ping != initialSonar && (initialSonar - ping) > RoundingError) {
+      Serial.println("starting mp3");
       mp3->begin(file, out);
       WS2812_Show(5);
     }
