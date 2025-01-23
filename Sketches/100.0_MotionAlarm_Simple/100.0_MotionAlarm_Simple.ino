@@ -42,9 +42,9 @@ void stopAudio() {
   out->stop();
   pinMode(6, OUTPUT);
   digitalWrite(6, LOW);
-  delete file;
-  delete mp3;
   delete out;
+  delete mp3;
+  delete file;
 }
 
 void setupLights() {
@@ -54,7 +54,7 @@ void setupLights() {
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
+  delay(500);
   EEPROM.begin(512);
   delay(500);
 
@@ -62,6 +62,7 @@ void setup() {
   setupLights();
   Ultrasonic_Setup();
   Emotion_Setup();
+  delay(500);
   
   backgroundPing = Get_Sonar();
   delay(500);
@@ -85,5 +86,5 @@ void loop()
       mp3->begin(file, out);
     }
   }
-  delay(100);
+  delay(50);
 }
