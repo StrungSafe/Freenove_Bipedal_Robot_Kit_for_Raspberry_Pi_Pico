@@ -3,9 +3,6 @@
 #include "Freenove_Robot_For_Pico_W.h"
 #include "Freenove_Robot_Emotion.h"
 
-#include "Bipedal_Robot.h"
-extern Bipedal_Robot Bipedal_Robot;  //This is Bipedal_Robot!
-
 //////////////////////Buzzer drive area///////////////////////////////////
 void Buzzer_Setup(void) {
   pinMode(PIN_BUZZER, OUTPUT);
@@ -102,18 +99,6 @@ float Get_Sonar(void) {
     distance = MAX_DISTANCE;
   // Serial.print("Distance: " + String(distance) + "\n");  //Print ultrasonic distance
   return distance;                                       // return the distance value
-}
-
-//Ultrasonic robot
-void Ultrasonic_Avoid() {
-    if (Get_Sonar() <= 15) {
-      Serial.println("Ultrasonic Avoid mode... ");
-      Serial.println(Get_Sonar());
-      Bipedal_Robot.walk(2,1000,-1); // BACKWARD x2
-      Bipedal_Robot.turn(3,1000,1); // LEFT x3
-    }
-    Bipedal_Robot.walk(1,1000,1); // FORWARD x1
-    Serial.println("Ultrasonic mode... ");
 }
 
 int Check_Module_value = 0;

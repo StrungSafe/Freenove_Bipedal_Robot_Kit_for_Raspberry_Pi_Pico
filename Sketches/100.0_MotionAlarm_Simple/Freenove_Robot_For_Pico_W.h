@@ -32,7 +32,6 @@ void Set_Battery_Coefficient(float coefficient);//Set the partial pressure coeff
 void Ultrasonic_Setup(void);//Ultrasonic initialization
 float Get_Sonar(void);//Obtain ultrasonic distance data
 extern int distance[4]; 
-void Ultrasonic_Avoid();
 
 extern int Check_Module_value;
 extern bool isLightModeFirstStarting ;  //is_light_mode_first_starting
