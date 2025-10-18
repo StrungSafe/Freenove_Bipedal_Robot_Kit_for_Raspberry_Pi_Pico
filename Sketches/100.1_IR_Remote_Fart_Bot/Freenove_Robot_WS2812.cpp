@@ -185,6 +185,42 @@ void WS2812_SetMode(int mode)
   ws2812_task_mode = constrain(mode, 0, 5);
 }
 
+void ws2812_red(void)
+{
+  ws2812_strip_time_next = millis();
+  if (ws2812_strip_time_next - ws2812_strip_time_now > 100)
+  {
+    ws2812_strip_time_now = ws2812_strip_time_next;
+    for (int i = 0; i < LEDS_COUNT; i++)
+      ws2812_strip.setPixelColor(i, 255, 0, 0);
+    ws2812_strip.show();
+  }
+}
+
+void ws2812_yellow(void)
+{
+  ws2812_strip_time_next = millis();
+  if (ws2812_strip_time_next - ws2812_strip_time_now > 100)
+  {
+    ws2812_strip_time_now = ws2812_strip_time_next;
+    for (int i = 0; i < LEDS_COUNT; i++)
+      ws2812_strip.setPixelColor(i, 255, 255, 0);
+    ws2812_strip.show();
+  }
+}
+
+void ws2812_green(void)
+{
+  ws2812_strip_time_next = millis();
+  if (ws2812_strip_time_next - ws2812_strip_time_now > 100)
+  {
+    ws2812_strip_time_now = ws2812_strip_time_next;
+    for (int i = 0; i < LEDS_COUNT; i++)
+      ws2812_strip.setPixelColor(i, 0, 128, 0);
+    ws2812_strip.show();
+  }
+}
+
 //WS2812 non-blocking display function
 void WS2812_Show(int mode)
 {
@@ -207,6 +243,15 @@ void WS2812_Show(int mode)
       break;
     case 5:
       ws2812_rainbow();
+      break;
+    case 6:
+      ws2812_red();
+      break;
+    case 7:
+      ws2812_yellow();
+      break;
+    case 8:
+      ws2812_green();
       break;
     default:
       break;

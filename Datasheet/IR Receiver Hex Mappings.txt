@@ -1,0 +1,26 @@
+IR Receiver
+
+Power - BA45FF00
+Menu - B847FF00
+Test - BB44FF00
++ (plus) - BF40FF00
+<- (backward) - BC43FF00
+<<- (reverse) - F807FF00
+play - EA15FF00
+->> (forward) - F609FF00
+0 - E916FF00
+- (minus) - E619FF00
+C - F20DFF00
+1 - F30CFF00
+2 - E718FF00
+3 - A15EFF00
+4 - F708FF00
+5 - E31CFF00
+6 - A55AFF00
+7 - BD42FF00
+8 - AD52FF00
+9 - B54AFF00
+
+0x0 - (holding button)
+
+Incomplete and corrupted data will be received
